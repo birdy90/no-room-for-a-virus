@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
     public float SizeScale = 1f;
 
     private Rigidbody _rigidBody;
-    [SerializeField] private Transform _playerTransform;
+    private Transform _playerTransform;
 
     private void Awake()
     {
@@ -35,7 +35,6 @@ public class Enemy : MonoBehaviour
 
     private void LookAtPlayer()
     {
-        Vector3 direction = (_playerTransform.position - transform.position).normalized;
         transform.LookAt(_playerTransform.position);
     }
 

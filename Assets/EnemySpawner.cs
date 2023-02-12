@@ -1,49 +1,38 @@
-using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 /// <summary>
 /// EnemySpawner must be on the same object as a PlayerController, so the enemies will spawn around the player
 /// </summary>
-[RequireComponent(typeof(PlayerController))]
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private float SpawnDistance = 15f;
+    [SerializeField] private float SpawnDistance = 30;
     [SerializeField] private float SpawnInterval = 1f;
 
-    [SerializeField] private GameObject EnemyPrefab;
+    [SerializeField] private Enemy EnemyPrefab;
 
     public void Start()
     {
-        Debug.Log("SPWANER START");
-        StartCoroutine("Spawn");
+        InvokeRepeating(nameof(Spawn), 0, SpawnInterval);
     }
 
     public void OnDestroy()
     {
-        StopCoroutine(nameof(Spawn));
+        CancelInvoke(nameof(Spawn));
     }
 
-    private IEnumerable Spawn()
+    private void Spawn()
     {
-        Debug.Log("START SPAWN");
         if (!EnemyPrefab)
         {
-            yield break;
+            return;
         }
 
-        Debug.Log("SUCCESS");
+        float randomAngle = Random.Range(0, 360);
+        Vector3 spawnDirection = new Vector3(Mathf.Cos(randomAngle), 0, Mathf.Sin(randomAngle));
+        Vector3 spawnPosition = transform.position + spawnDirection * SpawnDistance;
 
-        while (true)
-        {
-            float randomAngle = Random.Range(0, 360);
-            Debug.Log(randomAngle);
-            Vector3 spawnDirection = new Vector3(Mathf.Cos(randomAngle), 0, Mathf.Sin(randomAngle));
-            Vector3 spawnPosition = transform.position + spawnDirection * SpawnDistance;
-
-            Instantiate(EnemyPrefab, spawnPosition, Quaternion.identity);
-            
-            yield return new WaitForSeconds(SpawnInterval);
-        }
+        Enemy enemy = Instantiate(EnemyPrefab, spawnPosition, Quaternion.identity);
+        enemy.SetPlayerTransform(transform);
     }
 }
