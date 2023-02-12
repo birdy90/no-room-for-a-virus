@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DesktopInput : MonoBehaviour
@@ -9,7 +10,7 @@ public class DesktopInput : MonoBehaviour
     private Vector3 _mouseWorldPoint;
 
     private Camera _mainCamera;
-    private Plane _plane = new Plane(Vector3.up, 0);
+    private Plane _plane = new Plane(Vector3.up, new Vector3(0, Constants.WeaponVecticalPosition, 0));
 
     void Awake()
     {
@@ -40,5 +41,10 @@ public class DesktopInput : MonoBehaviour
 
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         _mouseWorldPoint = _plane.Raycast(ray, out float distance) ? ray.GetPoint(distance) : Vector3.zero;
+
+        if (Input.GetMouseButton((int)MouseButton.Left))
+        {
+            _playerController.Fire();
+        }
     }
 }

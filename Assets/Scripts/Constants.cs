@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System.Numerics;
 
 public static class Constants
 {
     public static string VerticalAxis = "Vertical";
     public static string HorizontalAxis = "Horizontal";
+
+    public static float WeaponVecticalPosition = 0.5f;
 }

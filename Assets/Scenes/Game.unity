@@ -545,6 +545,8 @@ GameObject:
   - component: {fileID: 414223566}
   - component: {fileID: 414223568}
   - component: {fileID: 414223569}
+  - component: {fileID: 414223570}
+  - component: {fileID: 414223571}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -582,6 +584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 2
+  Weapon: {fileID: 4476182503297478199, guid: f8ff7768017f37c4aa3d87d7d3dce3bb, type: 3}
 --- !u!54 &414223569
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -598,6 +601,34 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!114 &414223570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414223565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8b4bf15831bbea4e825f245c6052daa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &414223571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414223565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be8d7a92ebbb24546868ed38391a13dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpawnDistance: 10
+  SpawnInterval: 1
+  EnemyPrefab: {fileID: 4881409863429747978, guid: 74dd6221dd7e02f4b80ca40c70794206,
+    type: 3}
 --- !u!1 &733258564
 GameObject:
   m_ObjectHideFlags: 3
