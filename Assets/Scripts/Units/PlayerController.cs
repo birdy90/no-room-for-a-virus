@@ -9,7 +9,6 @@ namespace Units
     [RequireComponent(typeof(WeaponController))]
     public class PlayerController : MonoBehaviour, IMortal
     {
-    
         private Rigidbody _rigidbody;
 
         private readonly Vector3 _forwardDirection = new Vector3(-1, 0, 1);

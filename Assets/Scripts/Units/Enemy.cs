@@ -16,14 +16,14 @@ namespace Units
         
         private Rigidbody _rigidBody;
         private StatsController _statsController;
-        private DamageSource _damageSource;
+        private PlayerController _playerController;
+        private ExperienceController _experienceController;
         private Transform _playerTransform;
 
-        private void Awake()
+        private void Start()
         {
             _rigidBody = GetComponent<Rigidbody>();
             _statsController = GetComponent<StatsController>();
-            _damageSource = GetComponent<DamageSource>();
         }
 
         private void FixedUpdate()
@@ -43,13 +43,17 @@ namespace Units
             transform.LookAt(_playerTransform.position);
         }
 
-        public void SetPlayerTransform(Transform playerTransform)
+        public void SetPlayerController(PlayerController player)
         {
-            _playerTransform = playerTransform;
+            _playerController = player;
+            _playerTransform = _playerController.transform;
+            _experienceController = player.GetComponent<ExperienceController>();
         }
 
         public void Die()
         {
+            Debug.Log(_experienceController); // THIS IS NULL SOMEHOW
+            _experienceController.AddExperience(_statsController.Stats.Experience);
             Destroy(gameObject);
         }
     }

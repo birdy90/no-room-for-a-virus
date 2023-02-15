@@ -16,8 +16,8 @@ MonoBehaviour:
   StatsSprite: {fileID: 0}
   Speed: 0
   Damage: 2
-  AutofireInterval: 2
   Health: 0
   TemporalShield: 0
   DamageReduction: 0
-  ReloadTime: 2
+  ReloadTime: 1
+  Experience: 0

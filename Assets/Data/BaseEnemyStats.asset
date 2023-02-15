@@ -20,3 +20,4 @@ MonoBehaviour:
   TemporalShield: 1
   DamageReduction: 1
   ReloadTime: 0
+  Experience: 1

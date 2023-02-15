@@ -313,8 +313,8 @@ GameObject:
   - component: {fileID: 4881409863429747972}
   - component: {fileID: 3508314968470620877}
   - component: {fileID: 4881409863429747973}
-  - component: {fileID: 517421867603103865}
   - component: {fileID: 7712901810472507750}
+  - component: {fileID: 517421867603103865}
   - component: {fileID: 1956972346712728997}
   m_Layer: 6
   m_Name: Enemy
@@ -386,6 +386,19 @@ MonoBehaviour:
   ChildrenMax: 0
   ChildPrefab: {fileID: 0}
   SizeScale: 1
+--- !u!114 &7712901810472507750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4881409863429747978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f95ebee293e84bc4adeeb26422043fd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BaseStats: {fileID: 11400000, guid: a29740248574bac4494e85da2c00d13d, type: 2}
 --- !u!114 &517421867603103865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,19 +416,6 @@ MonoBehaviour:
     m_Bits: 256
   HealthBar: {fileID: 2395069662267349295}
   HealthText: {fileID: 0}
---- !u!114 &7712901810472507750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4881409863429747978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f95ebee293e84bc4adeeb26422043fd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BaseStats: {fileID: 11400000, guid: a29740248574bac4494e85da2c00d13d, type: 2}
 --- !u!114 &1956972346712728997
 MonoBehaviour:
   m_ObjectHideFlags: 0

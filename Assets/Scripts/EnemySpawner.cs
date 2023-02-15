@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 /// <summary>
 /// EnemySpawner must be on the same object as a PlayerController, so the enemies will spawn around the player
 /// </summary>
+[RequireComponent(typeof(PlayerController))]
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private float SpawnDistance = 30;
@@ -34,6 +35,6 @@ public class EnemySpawner : MonoBehaviour
         Vector3 spawnPosition = transform.position + spawnDirection * SpawnDistance;
 
         Enemy enemy = Instantiate(EnemyPrefab, spawnPosition, Quaternion.identity);
-        enemy.SetPlayerTransform(transform);
+        enemy.SetPlayerController(GetComponent<PlayerController>());
     }
 }

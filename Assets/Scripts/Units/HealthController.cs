@@ -15,13 +15,9 @@ namespace Units
         private StatsController _unitStats;
         private float _currentHealth = 1f;
 
-        private void Awake()
-        {
-            _unitStats = GetComponent<StatsController>();
-        }
-
         private void Start()
         {
+            _unitStats = GetComponent<StatsController>();
             _currentHealth = _unitStats.Stats.Health;
             UpdateUI();
         }

@@ -22,7 +22,6 @@ namespace Units
         public void SetWeaponStats(UnitStats stats)
         {
             _weaponStats = stats;
-            Debug.Log($"ADDED WEAPON: {_weaponStats}");
             Recalculate();
         }
 
