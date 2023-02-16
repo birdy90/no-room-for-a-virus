@@ -52,7 +52,6 @@ namespace Units
 
         public void Die()
         {
-            Debug.Log(_experienceController); // THIS IS NULL SOMEHOW
             _experienceController.AddExperience(_statsController.Stats.Experience);
             Destroy(gameObject);
         }

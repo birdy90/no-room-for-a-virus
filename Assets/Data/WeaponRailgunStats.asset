@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: 
   StatsSprite: {fileID: 0}
   Speed: 0
-  Damage: 2
+  Damage: 3
   Health: 0
   TemporalShield: 0
   DamageReduction: 0

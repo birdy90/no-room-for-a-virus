@@ -1,5 +1,7 @@
-﻿using Interfaces;
+﻿using System;
+using System.Collections;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,27 +10,36 @@ namespace Units
     [RequireComponent(typeof(StatsController))]
     public class ExperienceController : MonoBehaviour
     {
-        private float ExperienceForNextLevel => ExperienceCurveMultiplier * ((_currentLevel - 1) / 3 + 1);
+        private float ExperienceForNextLevel => ExperienceCurveMultiplier * ((_currentLevel - 1) / 1.5f + 1);
         
         [SerializeField] private float ExperienceCurveMultiplier = 10f;
         [SerializeField] private Image ExperienceBar;
+        [SerializeField] private TextMeshProUGUI LevelText;
+        [SerializeField] private TextMeshProUGUI ExperienceText;
+        [SerializeField] private BonusSelectionWindow BonusSelectionWindow;
 
         private StatsController _unitStats;
         private float _currentLevel = 1f;
-        private float _currentExperience = 1f;
+        private float _currentExperience;
 
         private void Start()
         {
             _unitStats = GetComponent<StatsController>();
+            BonusSelectionWindow.OnBonusSelected += NewBonus;
             UpdateUI();
+            ShowBonusSelectionWindow();
         }
 
         private void UpdateUI()
         {
-            if (ExperienceBar)
+            if (!ExperienceBar || !ExperienceText || !LevelText)
             {
-                ExperienceBar.fillAmount = _currentExperience / ExperienceForNextLevel;
+                throw new Exception("Not enough interface to display experience");
             }
+            
+            ExperienceBar.fillAmount = _currentExperience / ExperienceForNextLevel;
+            LevelText.text = $"Lvl. {_currentLevel}";
+            ExperienceText.text = $"{_currentExperience:F0}/{ExperienceForNextLevel:F0}";
         }
 
         public void AddExperience(float experience)
@@ -39,9 +50,28 @@ namespace Units
             {
                 _currentExperience -= ExperienceForNextLevel;
                 _currentLevel += 1;
+                StartCoroutine(nameof(ShowBonusSelectionWindowWithTimer));
             }
             
             UpdateUI();
+        }
+        
+        private IEnumerator ShowBonusSelectionWindowWithTimer()
+        {
+            yield return new WaitForSecondsRealtime(0.2f);
+            ShowBonusSelectionWindow();
+        }
+
+        private void ShowBonusSelectionWindow()
+        {
+            GameFlow.Pause();
+            BonusSelectionWindow.gameObject.SetActive(true);
+            BonusSelectionWindow.FillBonusButtons();
+        }
+
+        private void NewBonus(UnitStats bonus)
+        {
+            _unitStats.AddBonus(bonus);
         }
     }
 }

@@ -35,6 +35,11 @@ public class DesktopInput : MonoBehaviour
 
     void GetMouseInput()
     {
+        if (GameFlow.IsPaused)
+        {
+            return;
+        }
+        
         if (!_mainCamera)
         {
             _mouseWorldPoint = Vector3.zero;

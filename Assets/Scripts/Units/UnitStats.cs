@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Units
 {
@@ -33,6 +34,20 @@ namespace Units
             stats.ReloadTime = a.ReloadTime + b.ReloadTime;
 
             return stats;
+        }
+
+        public Dictionary<string, float> GetNonZeroValues()
+        {
+            Dictionary<string, float> values = new Dictionary<string, float>();
+
+            if (Speed != 0) values.Add("Speed", Speed);
+            if (Damage != 0) values.Add("Damage", Damage);
+            if (Health != 0) values.Add("Health", Health);
+            if (TemporalShield != 0) values.Add("TemporalShield", TemporalShield);
+            if (DamageReduction != 0) values.Add("DamageReduction", DamageReduction);
+            if (ReloadTime != 0) values.Add("ReloadTime", ReloadTime);
+
+            return values;
         }
 
         public override string ToString()
