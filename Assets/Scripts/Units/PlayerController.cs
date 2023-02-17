@@ -1,6 +1,7 @@
 using System;
 using Interfaces;
 using UnityEngine;
+using Utils;
 
 namespace Units
 {
@@ -9,6 +10,8 @@ namespace Units
     [RequireComponent(typeof(WeaponController))]
     public class PlayerController : MonoBehaviour, IMortal
     {
+        [SerializeField] private GameObject DeathCanvas;
+        
         private Rigidbody _rigidbody;
 
         private readonly Vector3 _forwardDirection = new Vector3(-1, 0, 1);
@@ -45,7 +48,9 @@ namespace Units
 
         public void Die()
         {
-            Debug.Log("YOU DIED");
+            GameFlow.Pause();
+            GameFlow.PauseMenuAllowed = false;
+            DeathCanvas.SetActive(true);
         }
     }
 }

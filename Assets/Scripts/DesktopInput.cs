@@ -1,10 +1,12 @@
 using Units;
 using Unity.VisualScripting;
 using UnityEngine;
+using Utils;
 
 public class DesktopInput : MonoBehaviour
 {
     [SerializeField] private PlayerController PlayerController;
+    [SerializeField] private GameObject PauseMenu;
 
     private float _forwardInput;
     private float _sideInput;
@@ -15,13 +17,16 @@ public class DesktopInput : MonoBehaviour
 
     void Awake()
     {
+        GameFlow.PauseMenuAllowed = true;
         _mainCamera = Camera.main;
     }
 
     void Update()
     {
-        if (GameFlow.IsPaused) return;
+        GetUIInput();
         
+        if (GameFlow.IsPaused) return;
+
         GetKeyboardInput();
         PlayerController.Move(_forwardInput, _sideInput);
 
@@ -29,6 +34,22 @@ public class DesktopInput : MonoBehaviour
         PlayerController.LookAt(_mouseWorldPoint);
     }
 
+    void GetUIInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && GameFlow.PauseMenuAllowed)
+        {
+            PauseMenu.SetActive(!PauseMenu.activeSelf);
+            if (PauseMenu.activeSelf)
+            {
+                GameFlow.Pause();
+            }
+            else
+            {
+                GameFlow.Unpause();
+            }
+        }
+    }
+    
     void GetKeyboardInput()
     {
         _forwardInput = Input.GetAxisRaw(Constants.VerticalAxis);

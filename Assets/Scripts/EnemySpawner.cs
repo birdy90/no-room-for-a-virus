@@ -13,7 +13,7 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private float SpawnDistance = 30;
     [SerializeField] private float SpawnInterval = 1f;
-    [SerializeField] private float EnemyLevelChangeInterval = 60f;
+    [SerializeField] private float EnemyLevelChangeInterval = 20f;
     [SerializeField] private UnitStats StatsDiffPerLevel;
     [SerializeField] private float EliteEnemiesSpawnInterval = 60f;
     [SerializeField] private float EliteEnemyMultiplier = 2f;
@@ -30,7 +30,7 @@ public class EnemySpawner : MonoBehaviour
     /// <summary>
     /// Set value here so it will skip first N seconds
     /// </summary>
-    private float _lastEliteEnemySpawnTime = 0f;
+    private float _lastEliteEnemySpawnTime = 20f;
     private static readonly int Color1 = Shader.PropertyToID("_Color");
     private static readonly int Sprite1 = Shader.PropertyToID("_Sprite");
 
@@ -77,6 +77,7 @@ public class EnemySpawner : MonoBehaviour
         if (Math.Pow(timePartPassed, 3) > Random.value)
         {
             _lastEliteEnemySpawnTime = Time.time;
+            enemy.IsElite = true;
             enemy.transform.localScale = new Vector3(EliteEnemyMultiplier, EliteEnemyMultiplier, EliteEnemyMultiplier);
             stats *= EliteEnemyMultiplier;
             stats.Speed = (_playerController.Stats.Speed - enemy.GetComponent<StatsController>().BaseStats.Speed) * 0.8f;
@@ -94,7 +95,7 @@ public class EnemySpawner : MonoBehaviour
 
     private Color GetColorForLevel(int level)
     {
-        int colorIndex = Math.Min(AvailableColors.Count, (level - 1) / AvailableIcons.Count);
+        int colorIndex = Math.Min(AvailableColors.Count - 1, (level - 1) / AvailableIcons.Count);
         return AvailableColors[colorIndex];
     }
 

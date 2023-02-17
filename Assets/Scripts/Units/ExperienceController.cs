@@ -4,6 +4,7 @@ using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 namespace Units
 {
@@ -19,8 +20,10 @@ namespace Units
         [SerializeField] private BonusSelectionWindow BonusSelectionWindow;
 
         private StatsController _unitStats;
-        private float _currentLevel = 1f;
+        private int _currentLevel = 1;
         private float _currentExperience;
+
+        public int Level => _currentLevel;
 
         private void Start()
         {
@@ -58,6 +61,7 @@ namespace Units
         
         private IEnumerator ShowBonusSelectionWindowWithTimer()
         {
+            GameFlow.PauseMenuAllowed = false;
             yield return new WaitForSecondsRealtime(0.2f);
             ShowBonusSelectionWindow();
         }
@@ -72,6 +76,7 @@ namespace Units
         private void NewBonus(UnitStats bonus)
         {
             _unitStats.AddBonus(bonus);
+            GameFlow.PauseMenuAllowed = true;
         }
     }
 }

@@ -9,17 +9,19 @@ namespace Units
     [RequireComponent(typeof(DamageSource))]
     public class Enemy : MonoBehaviour, IMortal
     {
+        public bool IsElite = false;
+        
         [SerializeField] private int ChildrenMin = 0;
         [SerializeField] private int ChildrenMax = 0;
         [SerializeField] private GameObject ChildPrefab;
 
-        [SerializeField] private float SizeScale = 1f;
         
         private Rigidbody _rigidBody;
         private StatsController _statsController;
         private PlayerController _playerController;
         private ExperienceController _experienceController;
         private Transform _playerTransform;
+
         
         public UnitStats Stats => _statsController.Stats;
 
@@ -36,6 +38,8 @@ namespace Units
 
         private void MoveTowardsPlayer()
         {
+            if (!_playerTransform) return;
+            
             Vector3 playerPosition = _playerTransform.position;
             Vector3 direction = (playerPosition - transform.position).normalized;
             _rigidBody.velocity = _statsController.Stats.Speed * direction;
@@ -53,6 +57,7 @@ namespace Units
         public void Die()
         {
             _experienceController.AddExperience(_statsController.Stats.Experience);
+            _playerController.GetComponent<GameStatisticsController>().EnemyKilled(IsElite);
             Destroy(gameObject);
         }
     }
