@@ -1,4 +1,5 @@
-﻿using Interfaces;
+﻿using System;
+using Interfaces;
 using UnityEngine;
 
 namespace Units
@@ -20,6 +21,11 @@ namespace Units
         private ExperienceController _experienceController;
         private Transform _playerTransform;
 
+        private void Awake()
+        {
+            
+        }
+
         private void Start()
         {
             _rigidBody = GetComponent<Rigidbody>();
@@ -28,26 +34,23 @@ namespace Units
 
         private void FixedUpdate()
         {
-            MoveToPlayer();
-            LookAtPlayer();
+            MoveTowardsPlayer();
         }
 
-        private void MoveToPlayer()
+        private void MoveTowardsPlayer()
         {
-            Vector3 direction = (_playerTransform.position - transform.position).normalized;
+            Vector3 playerPosition = _playerTransform.position;
+            Vector3 direction = (playerPosition - transform.position).normalized;
             _rigidBody.velocity = _statsController.Stats.Speed * direction;
+            
+            transform.LookAt(playerPosition);
         }
 
-        private void LookAtPlayer()
+        public void SetPlayerController(PlayerController playerController)
         {
-            transform.LookAt(_playerTransform.position);
-        }
-
-        public void SetPlayerController(PlayerController player)
-        {
-            _playerController = player;
+            _playerController = playerController;
             _playerTransform = _playerController.transform;
-            _experienceController = player.GetComponent<ExperienceController>();
+            _experienceController = playerController.GetComponent<ExperienceController>();
         }
 
         public void Die()

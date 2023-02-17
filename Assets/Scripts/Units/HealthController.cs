@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Interfaces;
 using TMPro;
 using UnityEngine;
@@ -17,10 +18,14 @@ namespace Units
         [SerializeField] private Image ShieldBar;
         [SerializeField] private TextMeshProUGUI ShieldText;
 
+        [SerializeField] private bool HideHealthWhenFull = false;
+
         private StatsController _statsController;
         private float _currentHealth = 0f;
         private float _currentShield = 0f;
         private float _nextShieldRestoreStep = 0f;
+
+        private Dictionary<GameObject, Coroutine> _activeDamagers = new Dictionary<GameObject, Coroutine>();
 
         private void Start()
         {
@@ -28,6 +33,7 @@ namespace Units
             _statsController.OnStatsUpdated.AddListener(UpdateUI);
             
             _currentHealth = _statsController.Stats.Health;
+            HealthBar.transform.parent.gameObject.SetActive(!HideHealthWhenFull);
             UpdateUI();
 
             if (ShieldBar)
@@ -36,9 +42,9 @@ namespace Units
             }
         }
 
-        private void Destroy()
+        private void OnDestroy()
         {
-            StopCoroutine(nameof(RestoreShield));
+            StopAllCoroutines();
         }
 
         private void TakeDamage(DamageSource damageSource)
@@ -58,6 +64,7 @@ namespace Units
                 _currentHealth = Mathf.Max(_currentHealth - dealtDamage, 0);
             }
 
+            HealthBar.transform.parent.gameObject.SetActive(true);
             UpdateUI();
 
             if (_currentHealth == 0 && TryGetComponent(out IMortal dieController))
@@ -97,14 +104,41 @@ namespace Units
         private void OnCollisionEnter(Collision collision)
         {
             int colliderLayerMask = 1 << collision.gameObject.layer;
-            if ((DamagingLayers & colliderLayerMask) == 0)
+            if ((DamagingLayers & colliderLayerMask) == 0) return;
+                
+            Coroutine coroutine = StartCoroutine(nameof(CollisionStay), collision);
+            _activeDamagers.Add(collision.gameObject, coroutine);
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            if (!_activeDamagers.ContainsKey(collision.gameObject)) return;
+            CancelTakingDamage(collision);
+        }
+
+        private void CancelTakingDamage(Collision collision)
+        {
+            StopCoroutine(_activeDamagers[collision.gameObject]);
+            _activeDamagers.Remove(collision.gameObject);   
+        }
+
+        private IEnumerator CollisionStay(Collision collision)
+        {
+            while (true)
             {
-                return;
-            }
-        
-            if (collision.gameObject.TryGetComponent(out DamageSource damageSource))
-            {
-                TakeDamage(damageSource);
+                // in case the object was destroyed while colliding
+                if (!collision.gameObject)
+                {
+                    CancelTakingDamage(collision);
+                    yield break;
+                }
+                
+                if (collision.gameObject.TryGetComponent(out DamageSource damageSource))
+                {
+                    TakeDamage(damageSource);
+                }
+
+                yield return new WaitForSeconds(1f);
             }
         }
 

@@ -13,8 +13,11 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] private Enemy EnemyPrefab;
 
+    private PlayerController _playerController;
+
     public void Start()
     {
+        _playerController = GetComponent<PlayerController>();
         InvokeRepeating(nameof(Spawn), 0, SpawnInterval);
     }
 
@@ -35,6 +38,6 @@ public class EnemySpawner : MonoBehaviour
         Vector3 spawnPosition = transform.position + spawnDirection * SpawnDistance;
 
         Enemy enemy = Instantiate(EnemyPrefab, spawnPosition, Quaternion.identity);
-        enemy.SetPlayerController(GetComponent<PlayerController>());
+        enemy.SetPlayerController(_playerController);
     }
 }

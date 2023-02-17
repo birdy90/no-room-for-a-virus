@@ -8,7 +8,7 @@ namespace Utils
         private bool _hasCamera;
         private Vector3 _cameraDirection;
 
-        private void Awake()
+        private void Start()
         {
             _mainCamera = Camera.main;
             _hasCamera = _mainCamera != null;

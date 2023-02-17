@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DesktopInput : MonoBehaviour
 {
-    [SerializeField] private PlayerController _playerController;
+    [SerializeField] private PlayerController PlayerController;
 
     private float _forwardInput;
     private float _sideInput;
@@ -20,11 +20,13 @@ public class DesktopInput : MonoBehaviour
 
     void Update()
     {
+        if (GameFlow.IsPaused) return;
+        
         GetKeyboardInput();
-        _playerController.Move(_forwardInput, _sideInput);
+        PlayerController.Move(_forwardInput, _sideInput);
 
         GetMouseInput();
-        _playerController.LookAt(_mouseWorldPoint);
+        PlayerController.LookAt(_mouseWorldPoint);
     }
 
     void GetKeyboardInput()
@@ -35,22 +37,14 @@ public class DesktopInput : MonoBehaviour
 
     void GetMouseInput()
     {
-        if (GameFlow.IsPaused)
-        {
-            return;
-        }
-        
-        if (!_mainCamera)
-        {
-            _mouseWorldPoint = Vector3.zero;
-        }
+        if (!_mainCamera) return;
 
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         _mouseWorldPoint = _plane.Raycast(ray, out float distance) ? ray.GetPoint(distance) : Vector3.zero;
 
         if (Input.GetMouseButton((int)MouseButton.Left))
         {
-            _playerController.Fire();
+            PlayerController.Fire();
         }
     }
 }
