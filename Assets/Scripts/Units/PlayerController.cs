@@ -15,6 +15,8 @@ namespace Units
         private readonly Vector3 _sideDirection = new Vector3(1, 0, 1);
         private StatsController _statsController;
         private WeaponController _weaponController;
+
+        public UnitStats Stats => _statsController.Stats;
     
         void Awake()
         {

@@ -24,7 +24,6 @@ namespace Units
 
             stats.Name = a.Name;
             stats.StatsSprite = a.StatsSprite;
-            stats.Experience = a.Experience;
             
             stats.Speed = a.Speed + b.Speed;
             stats.Damage = a.Damage + b.Damage;
@@ -32,6 +31,32 @@ namespace Units
             stats.TemporalShield = a.TemporalShield + b.TemporalShield;
             stats.DamageReduction = a.DamageReduction + b.DamageReduction;
             stats.ReloadTime = a.ReloadTime + b.ReloadTime;
+            
+            stats.Experience = a.Experience + b.Experience;
+
+            return stats;
+        }
+
+        public static UnitStats operator *(float multiplier, UnitStats a)
+        {
+            return a * multiplier;
+        }
+        
+        public static UnitStats operator *(UnitStats a, float multiplier)
+        {
+            UnitStats stats = CreateInstance<UnitStats>();
+
+            stats.Name = a.Name;
+            stats.StatsSprite = a.StatsSprite;
+            
+            stats.Speed = a.Speed * multiplier;
+            stats.Damage = a.Damage * multiplier;
+            stats.Health = a.Health * multiplier;
+            stats.TemporalShield = a.TemporalShield * multiplier;
+            stats.DamageReduction = a.DamageReduction * multiplier;
+            stats.ReloadTime = a.ReloadTime * multiplier;
+            
+            stats.Experience = a.Experience * multiplier;
 
             return stats;
         }
@@ -52,7 +77,7 @@ namespace Units
 
         public override string ToString()
         {
-            return $"{Speed}{Damage}{Health}{TemporalShield}{DamageReduction}{ReloadTime}";
+            return $"{Speed}|{Damage}|{Health}|{TemporalShield}|{DamageReduction}|{ReloadTime}|{Experience}";
         }
     }
 }

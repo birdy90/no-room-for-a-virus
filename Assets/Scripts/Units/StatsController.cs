@@ -13,7 +13,8 @@ namespace Units
     {
         public UnitStats Stats => _currentStats;
         
-        [SerializeField] private UnitStats BaseStats;
+        public UnitStats BaseStats;
+        
         [SerializeField] private GameObject BonusIconsList;
         [SerializeField] private BonusGameUIIcon BonusIconPrefab;
         [SerializeField] private TextMeshProUGUI StatsDisplayedText;

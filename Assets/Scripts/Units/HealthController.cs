@@ -105,9 +105,12 @@ namespace Units
         {
             int colliderLayerMask = 1 << collision.gameObject.layer;
             if ((DamagingLayers & colliderLayerMask) == 0) return;
-                
-            Coroutine coroutine = StartCoroutine(nameof(CollisionStay), collision);
-            _activeDamagers.Add(collision.gameObject, coroutine);
+
+            if (collision.gameObject.TryGetComponent(out DamageSource damageSource))
+            {
+                Coroutine coroutine = StartCoroutine(nameof(CollisionStay), collision);
+                _activeDamagers.Add(collision.gameObject, coroutine);
+            }
         }
 
         private void OnCollisionExit(Collision collision)
@@ -124,21 +127,19 @@ namespace Units
 
         private IEnumerator CollisionStay(Collision collision)
         {
-            while (true)
+            DamageSource damageSource = collision.gameObject.GetComponent<DamageSource>();
+
+            try
             {
-                // in case the object was destroyed while colliding
-                if (!collision.gameObject)
-                {
-                    CancelTakingDamage(collision);
-                    yield break;
-                }
-                
-                if (collision.gameObject.TryGetComponent(out DamageSource damageSource))
+                while (collision.gameObject)
                 {
                     TakeDamage(damageSource);
+                    yield return new WaitForSeconds(1f);
                 }
-
-                yield return new WaitForSeconds(1f);
+            }
+            finally
+            {
+                CancelTakingDamage(collision);
             }
         }
 
@@ -154,7 +155,6 @@ namespace Units
                 if (Math.Abs(_statsController.Stats.TemporalShield - _currentShield) > 0.001f)
                 {
                     _nextShieldRestoreStep = Mathf.Min(_currentShield + 1, _statsController.Stats.TemporalShield);
-                    Debug.Log($"NEXT: {_nextShieldRestoreStep}");
                     while (Math.Abs(_nextShieldRestoreStep - _currentShield) > 0.001f)
                     {
                         lerpDuration += Time.deltaTime;

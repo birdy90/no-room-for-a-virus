@@ -20,11 +20,8 @@ namespace Units
         private PlayerController _playerController;
         private ExperienceController _experienceController;
         private Transform _playerTransform;
-
-        private void Awake()
-        {
-            
-        }
+        
+        public UnitStats Stats => _statsController.Stats;
 
         private void Start()
         {
