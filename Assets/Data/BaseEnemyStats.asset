@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: 
   StatsSprite: {fileID: 0}
-  Speed: 0.5
+  Speed: 1.5
   Damage: 1
   Health: 5
   TemporalShield: 1

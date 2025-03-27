@@ -19,5 +19,5 @@ MonoBehaviour:
   Health: 0
   TemporalShield: 0
   DamageReduction: 0
-  ReloadTime: 1
+  ReloadTime: 0.3
   Experience: 0
